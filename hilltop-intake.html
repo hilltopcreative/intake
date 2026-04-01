@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Hilltop Creative Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --deep:     #162144;
+  --deep-alt: #111c3a;
+  --mid:      #293c55;
+  --lime:     #c1ff72;
+  --white:    #ffffff;
+  --off:      #f0f4f8;
+  --slate:    #7d8fa3;
+  --slate-lt: #a4b4c4;
+  --cyan:     #67e8f9;
+  --border-l: rgba(193,255,114,0.15);
+  --font-body: 'Outfit', sans-serif;
+  --font-ui:   'Barlow Condensed', sans-serif;
+  --font-disp: 'DM Serif Display', serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--deep);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* grain */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.1rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(22,33,68,0.93); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(193,255,114,0.07);
+}
+.logo { display: flex; align-items: baseline; line-height: 1; text-decoration: none; }
+.logo-h  { font-family: var(--font-body); font-size: 1.25rem; font-weight: 400; color: var(--lime); }
+.logo-illtop { font-family: var(--font-disp); font-size: 1.25rem; font-weight: 700; color: var(--white); }
+.logo-ch { font-family: var(--font-ui); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate); margin-left: 0.5rem; align-self: flex-end; padding-bottom: 0.15rem; }
+.nav-tag { font-family: var(--font-ui); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  position: fixed; top: 57px; left: 0; right: 0; z-index: 199;
+  background: rgba(22,33,68,0.95); border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0.75rem 3rem;
+}
+.progress-steps { display: flex; align-items: center; gap: 0; max-width: 700px; margin: 0 auto; }
+.prog-step {
+  display: flex; align-items: center; gap: 0.5rem; flex: 1;
+  font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
+  transition: color 0.3s;
+}
+.prog-step.active { color: var(--lime); }
+.prog-step.done { color: var(--slate-lt); }
+.prog-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; flex-shrink: 0; transition: all 0.3s;
+}
+.prog-step.active .prog-num { background: var(--lime); color: var(--deep); border-color: var(--lime); }
+.prog-step.done .prog-num { background: rgba(193,255,114,0.15); border-color: rgba(193,255,114,0.3); color: var(--lime); }
+.prog-line { flex: 1; height: 1px; background: rgba(255,255,255,0.1); margin: 0 0.5rem; }
+.prog-step.done + .prog-line, .prog-step.active + .prog-line { background: rgba(193,255,114,0.25); }
+
+/* MAIN */
+main { padding: 8rem 1.5rem 4rem; max-width: 720px; margin: 0 auto; }
+
+/* SECTION PANELS */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* EYEBROW */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-family: var(--font-ui); font-size: 0.67rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--lime);
+  margin-bottom: 1rem;
+}
+.eyebrow::before { content: ''; width: 16px; height: 2px; background: var(--lime); }
+
+h1 {
+  font-family: var(--font-disp); font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400; line-height: 1.05; letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+h1 em { font-style: italic; color: var(--slate-lt); }
+.panel-sub { font-size: 0.95rem; color: var(--slate-lt); line-height: 1.75; margin-bottom: 2.5rem; }
+.panel-sub strong { color: var(--white); font-weight: 500; }
+
+/* PACKAGE CHOOSER */
+.pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; }
+.pkg-card {
+  background: var(--mid); border: 2px solid rgba(255,255,255,0.08);
+  padding: 1.5rem; cursor: pointer; transition: all 0.2s; position: relative;
+}
+.pkg-card:hover { border-color: rgba(193,255,114,0.3); }
+.pkg-card.selected { border-color: var(--lime); background: rgba(193,255,114,0.05); }
+.pkg-card.selected::after {
+  content: '✓'; position: absolute; top: 12px; right: 14px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--lime); color: var(--deep);
+  font-size: 0.7rem; font-weight: 700; font-family: sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 20px; text-align: center;
+}
+.pkg-tag { font-family: var(--font-ui); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 0.5rem; }
+.pkg-name { font-family: var(--font-disp); font-size: 1.15rem; color: var(--white); margin-bottom: 0.4rem; }
+.pkg-price { font-family: var(--font-ui); font-size: 0.78rem; color: var(--slate-lt); }
+.pkg-desc { font-size: 0.78rem; color: var(--slate); line-height: 1.6; margin-top: 0.6rem; }
+
+/* FORM */
+.form-section { margin-bottom: 2rem; }
+.form-section-title {
+  font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--lime);
+  padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-l);
+  margin-bottom: 1.25rem;
+}
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.f-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+.f-group label { font-family: var(--font-ui); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); }
+.f-group input,
+.f-group select,
+.f-group textarea {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white); font-family: var(--font-body); font-size: 0.88rem;
+  padding: 0.75rem 0.9rem; outline: none; transition: border-color 0.25s;
+  -webkit-appearance: none; appearance: none; resize: vertical;
+}
+.f-group input::placeholder,
+.f-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+.f-group input:focus,
+.f-group select:focus,
+.f-group textarea:focus { border-color: var(--lime); }
+.f-group select option { background: var(--deep); }
+.f-hint { font-size: 0.7rem; color: var(--slate); line-height: 1.5; margin-top: 0.25rem; }
+
+/* AVAILABILITY */
+.avail-grid { display: grid; gap: 1rem; }
+.avail-slot {
+  background: var(--mid); border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.25rem 1.5rem;
+}
+.avail-slot-label { font-family: var(--font-ui); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 0.75rem; }
+.avail-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* PAYMENT */
+.payment-box {
+  background: var(--mid); border: 1px solid var(--border-l);
+  padding: 2rem; position: relative; overflow: hidden; margin-bottom: 1.5rem;
+}
+.payment-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--lime), rgba(193,255,114,0.2));
+}
+.payment-pkg-label { font-family: var(--font-ui); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate); margin-bottom: 0.35rem; }
+.payment-pkg-name { font-family: var(--font-disp); font-size: 1.4rem; color: var(--white); margin-bottom: 0.25rem; }
+.payment-amount { font-family: var(--font-body); font-size: 2.4rem; font-weight: 400; color: var(--lime); letter-spacing: -0.03em; line-height: 1; margin: 0.75rem 0 0.35rem; }
+.payment-amount sup { font-size: 1rem; vertical-align: top; margin-top: 0.4rem; }
+.payment-note { font-size: 0.78rem; color: var(--slate-lt); line-height: 1.65; margin-bottom: 1.5rem; }
+.payment-note strong { color: var(--white); font-weight: 500; }
+
+.pay-btn {
+  display: block; text-align: center; text-decoration: none;
+  background: var(--lime); color: var(--deep);
+  font-family: var(--font-ui); font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 1.05rem 2rem; transition: background 0.2s; border: none; cursor: pointer; width: 100%;
+}
+.pay-btn:hover { background: var(--white); }
+.pay-btn.disabled { opacity: 0.35; pointer-events: none; cursor: not-allowed; }
+
+.secure-note {
+  display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+  font-size: 0.7rem; color: var(--slate); margin-top: 0.75rem;
+}
+.secure-note svg { flex-shrink: 0; }
+
+/* NAV BUTTONS */
+.btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2rem; }
+.btn-next {
+  background: var(--lime); color: var(--deep);
+  font-family: var(--font-ui); font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.95rem 2.2rem; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-next:hover { background: var(--white); }
+.btn-back {
+  background: none; border: 1px solid rgba(255,255,255,0.15); color: var(--slate-lt);
+  font-family: var(--font-ui); font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.9rem 1.6rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-back:hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
+.btn-note { font-size: 0.72rem; color: var(--slate); }
+
+/* SUCCESS */
+.success-box { text-align: center; padding: 3rem 2rem; }
+.success-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(193,255,114,0.12); border: 1px solid rgba(193,255,114,0.3);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+}
+.success-title { font-family: var(--font-disp); font-size: 2rem; margin-bottom: 0.75rem; }
+.success-body { font-size: 0.95rem; color: var(--slate-lt); line-height: 1.78; max-width: 460px; margin: 0 auto; }
+.success-body strong { color: var(--white); font-weight: 500; }
+
+/* REQUIRED STAR */
+.req { color: var(--lime); margin-left: 2px; }
+
+/* ERROR */
+.field-error { font-size: 0.68rem; color: #f97c7c; margin-top: 0.25rem; display: none; }
+.f-group.has-error input,
+.f-group.has-error select,
+.f-group.has-error textarea { border-color: #f97c7c; }
+.f-group.has-error .field-error { display: block; }
+
+/* FOOTER */
+footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; max-width: none; }
+footer p { font-size: 0.72rem; color: var(--slate); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  nav { padding: 1rem 1.25rem; }
+  .progress-wrap { padding: 0.75rem 1.25rem; }
+  .prog-step span { display: none; }
+  main { padding: 7.5rem 1.25rem 3rem; }
+  .pkg-grid { grid-template-columns: 1fr; }
+  .f-row { grid-template-columns: 1fr; }
+  .avail-inner { grid-template-columns: 1fr; }
+  footer { padding: 1.25rem; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">
+    <span class="logo-h">h</span><span class="logo-illtop">illtop</span>
+    <span class="logo-ch">creative hub</span>
+  </a>
+  <span class="nav-tag">Client Intake</span>
+</nav>
+
+<div class="progress-wrap">
+  <div class="progress-steps">
+    <div class="prog-step active" id="prog-1">
+      <div class="prog-num">1</div>
+      <span>Your Package</span>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="prog-2">
+      <div class="prog-num">2</div>
+      <span>About You</span>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="prog-3">
+      <div class="prog-num">3</div>
+      <span>Your Goals</span>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="prog-4">
+      <div class="prog-num">4</div>
+      <span>Availability</span>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="prog-5">
+      <div class="prog-num">5</div>
+      <span>Payment</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- PANEL 1: PACKAGE SELECTION -->
+  <div class="panel active" id="panel-1">
+    <div class="eyebrow">Step 1 of 5</div>
+    <h1>Which package are<br><em>you signing up for?</em></h1>
+    <p class="panel-sub">Select the package you discussed with us. This will personalize your intake form and show the correct payment link at the end.</p>
+
+    <div class="pkg-grid">
+      <div class="pkg-card" id="pkg-jumpstart" onclick="selectPackage('jumpstart')">
+        <div class="pkg-tag">Jumpstart Package</div>
+        <div class="pkg-name">Marketing Jumpstart</div>
+        <div class="pkg-price">$1,500 / month · 3-month commitment</div>
+        <div class="pkg-desc">Content shoot + social media management + Meta/Instagram ad management. Done-for-you marketing system.</div>
+      </div>
+      <div class="pkg-card" id="pkg-content" onclick="selectPackage('content')">
+        <div class="pkg-tag">Content Day</div>
+        <div class="pkg-name">Content Growth Starter</div>
+        <div class="pkg-price">$2,000 / month · 3-month commitment</div>
+        <div class="pkg-desc">Half-day interview-style shoot + short-form video editing + done-for-you social posting for 3 months.</div>
+      </div>
+    </div>
+
+    <p id="pkg-error" style="font-size:0.78rem;color:#f97c7c;display:none;margin-bottom:1rem;">Please select a package to continue.</p>
+
+    <div class="btn-row">
+      <button class="btn-next" onclick="nextPanel(1)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: ABOUT YOU -->
+  <div class="panel" id="panel-2">
+    <div class="eyebrow">Step 2 of 5</div>
+    <h1>Tell us about<br><em>your business.</em></h1>
+    <p class="panel-sub">Basic info so we can get to know you before we meet. This helps us hit the ground running on your onboarding call.</p>
+
+    <div class="form-section">
+      <div class="form-section-title">Contact Info</div>
+      <div class="f-row">
+        <div class="f-group" id="fg-fname">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="fname" placeholder="Jane">
+          <span class="field-error">Required</span>
+        </div>
+        <div class="f-group" id="fg-lname">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="lname" placeholder="Smith">
+          <span class="field-error">Required</span>
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-group" id="fg-email">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="jane@yourbrand.com">
+          <span class="field-error">Please enter a valid email</span>
+        </div>
+        <div class="f-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="(555) 000-0000">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Your Business</div>
+      <div class="f-group" id="fg-bizname">
+        <label>Business / Brand Name <span class="req">*</span></label>
+        <input type="text" id="bizname" placeholder="Your Business Name">
+        <span class="field-error">Required</span>
+      </div>
+      <div class="f-row">
+        <div class="f-group">
+          <label>Industry / Niche</label>
+          <select id="industry">
+            <option value="" disabled selected>Select your industry</option>
+            <option>Doctor / Healthcare Professional</option>
+            <option>Med Spa / Aesthetics</option>
+            <option>Fitness / Wellness</option>
+            <option>Business Coach / Consultant</option>
+            <option>Attorney / Legal Services</option>
+            <option>Real Estate Professional</option>
+            <option>Pool Builder / Service</option>
+            <option>Salon / Beauty Studio</option>
+            <option>Restaurant / Café</option>
+            <option>Home Services / Contractor</option>
+            <option>Retail / Boutique</option>
+            <option>Creator / Influencer</option>
+            <option>Nonprofit / Educator</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label>Business Website</label>
+          <input type="url" id="website" placeholder="https://yourbusiness.com">
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-group">
+          <label>Instagram Handle</label>
+          <input type="text" id="instagram" placeholder="@yourbusiness">
+        </div>
+        <div class="f-group">
+          <label>TikTok Handle</label>
+          <input type="text" id="tiktok" placeholder="@yourbusiness">
+        </div>
+      </div>
+      <div class="f-group">
+        <label>How long have you been in business?</label>
+        <select id="biz-age">
+          <option value="" disabled selected>Select one</option>
+          <option>Less than 1 year</option>
+          <option>1–2 years</option>
+          <option>3–5 years</option>
+          <option>6–10 years</option>
+          <option>10+ years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevPanel(2)">← Back</button>
+      <button class="btn-next" onclick="nextPanel(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: GOALS + CONTENT -->
+  <div class="panel" id="panel-3">
+    <div class="eyebrow">Step 3 of 5</div>
+    <h1>Your goals &amp;<br><em>content direction.</em></h1>
+    <p class="panel-sub">This is the most important section — the more you share, the better your shoot will go. Don't overthink it, just be honest.</p>
+
+    <div class="form-section">
+      <div class="form-section-title">Goals</div>
+      <div class="f-group" id="fg-goal">
+        <label>What is your #1 goal from this partnership? <span class="req">*</span></label>
+        <select id="goal">
+          <option value="" disabled selected>Select your primary goal</option>
+          <option>Grow my social media following</option>
+          <option>Generate more leads / inquiries</option>
+          <option>Build credibility and authority in my space</option>
+          <option>Attract higher-paying clients</option>
+          <option>Increase brand awareness locally</option>
+          <option>Launch my personal brand from scratch</option>
+          <option>All of the above</option>
+        </select>
+        <span class="field-error">Please select a goal</span>
+      </div>
+      <div class="f-group">
+        <label>Who is your ideal client or audience? Tell us about them.</label>
+        <textarea id="audience" rows="3" placeholder="Age range, location, what they struggle with, what they want..."></textarea>
+      </div>
+      <div class="f-group">
+        <label>What makes you different from your competitors?</label>
+        <textarea id="differentiator" rows="3" placeholder="What do you offer that others don't? What do clients say they love about working with you?"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Content Direction</div>
+      <div class="f-group">
+        <label>What topics do you want to be known for online?</label>
+        <textarea id="topics" rows="3" placeholder="e.g. weight loss science, aesthetic treatments, real estate investing, business mindset..."></textarea>
+        <span class="f-hint">Think about what questions your clients ask you most often — those are your best content topics.</span>
+      </div>
+      <div class="f-group">
+        <label>Are there any creators, accounts, or brands whose content style you love?</label>
+        <textarea id="inspo" rows="2" placeholder="Share any Instagram, TikTok, or YouTube accounts you find inspiring — even outside your industry"></textarea>
+      </div>
+      <div class="f-group">
+        <label>What's your current content situation?</label>
+        <select id="current-content">
+          <option value="" disabled selected>Select one</option>
+          <option>I post occasionally but nothing consistent</option>
+          <option>I've tried but don't know what to post</option>
+          <option>I'm posting but not getting results</option>
+          <option>I'm starting from zero — no presence yet</option>
+          <option>I have a decent following but want more growth</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label>Anything you absolutely do NOT want in your content?</label>
+        <textarea id="dont-want" rows="2" placeholder="Topics to avoid, things that feel off-brand, personal boundaries around what you share..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-section" id="section-shoot" style="display:none;">
+      <div class="form-section-title">Shoot Day Details (Content Day)</div>
+      <div class="f-group">
+        <label>Where would you like to film? (Your office, studio, home, etc.)</label>
+        <input type="text" id="shoot-location" placeholder="123 Main St, Suite 200, City, TX">
+      </div>
+      <div class="f-group">
+        <label>Any dates or weeks to avoid for the shoot?</label>
+        <input type="text" id="shoot-avoid" placeholder="e.g. Avoid first week of May, out of town June 10–15...">
+      </div>
+      <div class="f-group">
+        <label>Anything else we should know before the shoot?</label>
+        <textarea id="shoot-notes" rows="2" placeholder="Dress code preferences, space limitations, special equipment, pets on location..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-section" id="section-ads" style="display:none;">
+      <div class="form-section-title">Ads &amp; Marketing (Jumpstart)</div>
+      <div class="f-group">
+        <label>Do you have an existing Meta/Facebook ad account?</label>
+        <select id="ad-account">
+          <option value="" disabled selected>Select one</option>
+          <option>Yes, I have one set up</option>
+          <option>No, I've never run ads before</option>
+          <option>I've run some ads but nothing professional</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label>What monthly ad spend budget are you comfortable with? (Separate from management fee)</label>
+        <select id="ad-budget">
+          <option value="" disabled selected>Select a range</option>
+          <option>$300–$500/month</option>
+          <option>$500–$1,000/month</option>
+          <option>$1,000–$2,000/month</option>
+          <option>$2,000+/month</option>
+          <option>Not sure yet — need guidance</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Anything Else</div>
+      <div class="f-group">
+        <label>Anything else you'd like us to know before we meet?</label>
+        <textarea id="other-notes" rows="3" placeholder="Questions, concerns, things that are top of mind, context that would be helpful..."></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevPanel(3)">← Back</button>
+      <button class="btn-next" onclick="nextPanel(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4: AVAILABILITY -->
+  <div class="panel" id="panel-4">
+    <div class="eyebrow">Step 4 of 5</div>
+    <h1>When are you<br><em>available?</em></h1>
+    <p class="panel-sub" id="avail-sub">Give us your <strong>3 best available dates and time preferences</strong>. We'll confirm one of these within 24 hours. Mornings tend to work best for shoots — but we'll work around your schedule.</p>
+
+    <div class="avail-grid">
+      <div class="avail-slot">
+        <div class="avail-slot-label">First Choice</div>
+        <div class="avail-inner">
+          <div class="f-group" id="fg-date1">
+            <label>Date <span class="req">*</span></label>
+            <input type="date" id="date1">
+            <span class="field-error">Required</span>
+          </div>
+          <div class="f-group">
+            <label>Time Preference</label>
+            <select id="time1">
+              <option value="">No preference</option>
+              <option>Early morning (8–10am)</option>
+              <option>Late morning (10am–12pm)</option>
+              <option>Afternoon (12–3pm)</option>
+              <option>Late afternoon (3–5pm)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="avail-slot">
+        <div class="avail-slot-label">Second Choice</div>
+        <div class="avail-inner">
+          <div class="f-group">
+            <label>Date</label>
+            <input type="date" id="date2">
+          </div>
+          <div class="f-group">
+            <label>Time Preference</label>
+            <select id="time2">
+              <option value="">No preference</option>
+              <option>Early morning (8–10am)</option>
+              <option>Late morning (10am–12pm)</option>
+              <option>Afternoon (12–3pm)</option>
+              <option>Late afternoon (3–5pm)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="avail-slot">
+        <div class="avail-slot-label">Third Choice</div>
+        <div class="avail-inner">
+          <div class="f-group">
+            <label>Date</label>
+            <input type="date" id="date3">
+          </div>
+          <div class="f-group">
+            <label>Time Preference</label>
+            <select id="time3">
+              <option value="">No preference</option>
+              <option>Early morning (8–10am)</option>
+              <option>Late morning (10am–12pm)</option>
+              <option>Afternoon (12–3pm)</option>
+              <option>Late afternoon (3–5pm)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="f-group" style="margin-top:0.5rem;">
+      <label>Any scheduling notes?</label>
+      <input type="text" id="sched-notes" placeholder="e.g. Tuesdays only, prefer not before 9am, flexible all month...">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevPanel(4)">← Back</button>
+      <button class="btn-next" onclick="nextPanel(4)">Submit &amp; Continue to Payment →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 5: PAYMENT -->
+  <div class="panel" id="panel-5">
+    <div class="eyebrow">Step 5 of 5</div>
+    <h1>One last step —<br><em>secure your spot.</em></h1>
+    <p class="panel-sub">Your intake form has been submitted — we'll be in touch within 24 hours to confirm your dates. In the meantime, go ahead and submit your first payment to officially lock in your spot. <strong>Your date is not held until payment is received.</strong></p>
+
+    <!-- Jumpstart payment -->
+    <div id="pay-jumpstart" style="display:none;">
+      <div class="payment-box">
+        <div class="payment-pkg-label">Jumpstart Package — First Month</div>
+        <div class="payment-pkg-name">Marketing Jumpstart</div>
+        <div class="payment-amount"><sup>$</sup>1,500</div>
+        <p class="payment-note">This is your first month's payment. Subsequent months are billed on the same date each month for the duration of your 3-month commitment. <strong>Total commitment: $4,500.</strong></p>
+        <a class="pay-btn" id="pay-btn-jumpstart" href="https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-0ae1652d4e304ae9ba31269faaab2deee0c57cfea8d74bda84ebac406843af0647b706b0b4ec44c5be885e09b55cee6c?locale=EN_US&cta=saveandcopylink" target="_blank" rel="noopener">Pay $1,500 — Secure My Spot →</a>
+        <div class="secure-note">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#7d8fa3" stroke-width="1.3"><rect x="2" y="5.5" width="9" height="6.5" rx="1"/><path d="M4 5.5V4a2.5 2.5 0 0 1 5 0v1.5"/></svg>
+          Processed securely via QuickBooks Payments
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Day payment -->
+    <div id="pay-content" style="display:none;">
+      <div class="payment-box">
+        <div class="payment-pkg-label">Content Day — First Month</div>
+        <div class="payment-pkg-name">Content Growth Starter</div>
+        <div class="payment-amount"><sup>$</sup>2,000</div>
+        <p class="payment-note">This is your first month's payment and secures your shoot date. Months 2 and 3 are billed on the same date each month. <strong>Total commitment: $6,000.</strong></p>
+        <a class="pay-btn" id="pay-btn-content" href="https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-0ae1652d4e304ae9ba31269faaab2deee0c57cfea8d74bda84ebac406843af0647b706b0b4ec44c5be885e09b55cee6c?locale=EN_US&cta=saveandcopylink" target="_blank" rel="noopener">Pay $2,000 — Secure My Spot →</a>
+        <div class="secure-note">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#7d8fa3" stroke-width="1.3"><rect x="2" y="5.5" width="9" height="6.5" rx="1"/><path d="M4 5.5V4a2.5 2.5 0 0 1 5 0v1.5"/></svg>
+          Processed securely via QuickBooks Payments
+        </div>
+      </div>
+    </div>
+
+    <div class="success-box" id="success-msg" style="display:none;">
+      <div class="success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c1ff72" stroke-width="2"><polyline points="4,12 9,17 20,6"/></svg>
+      </div>
+      <div class="success-title">You're all set!</div>
+      <p class="success-body">We've received your intake form and will confirm your dates within 24 hours. Keep an eye on your inbox — Casey will be reaching out shortly.<br><br><strong>Next step:</strong> Check your email for a confirmation and prepare for your onboarding call.</p>
+    </div>
+
+    <div class="btn-row" id="pay-back-row">
+      <button class="btn-back" onclick="prevPanel(5)">← Back</button>
+      <button class="btn-next" onclick="markPaid()">I've Submitted My Payment →</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="logo">
+    <span class="logo-h">h</span><span class="logo-illtop">illtop</span>
+    <span class="logo-ch">creative hub</span>
+  </div>
+  <p>Questions? <a href="/cdn-cgi/l/email-protection#5e3d3f2d3b271e363732322a312e3d2c3b3f2a37283b362b3c703d3133" style="color:var(--slate-lt);text-decoration:none;"><span class="__cf_email__" data-cfemail="583b392b3d2118303134342c37283b2a3d392c312e3d302d3a763b3735">[email&#160;protected]</span></a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  let selectedPkg = null;
+
+  // Set min date for availability pickers to today
+  const today = new Date().toISOString().split('T')[0];
+  ['date1','date2','date3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.min = today;
+  });
+
+  function selectPackage(pkg) {
+    selectedPkg = pkg;
+    document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('pkg-' + pkg).classList.add('selected');
+    document.getElementById('pkg-error').style.display = 'none';
+
+    // Show/hide package-specific sections in panel 3
+    document.getElementById('section-shoot').style.display = pkg === 'content' ? 'block' : 'none';
+    document.getElementById('section-ads').style.display  = pkg === 'jumpstart' ? 'block' : 'none';
+
+    // Update availability sub text
+    const sub = document.getElementById('avail-sub');
+    if (pkg === 'content') {
+      sub.innerHTML = 'Give us your <strong>3 best available dates and time preferences</strong> for your half-day shoot. We\'ll confirm one of these within 24 hours. Mornings tend to work best for shoots — but we\'ll work around your schedule.';
+    } else {
+      sub.innerHTML = 'Give us your <strong>3 best available dates and time preferences</strong> for your onboarding call. We\'ll confirm one of these within 24 hours and get everything kicked off.';
+    }
+  }
+
+  async function nextPanel(current) {
+    if (current === 1) {
+      if (!selectedPkg) {
+        document.getElementById('pkg-error').style.display = 'block';
+        return;
+      }
+    }
+    if (current === 2) {
+      if (!validatePanel2()) return;
+    }
+    if (current === 3) {
+      if (!validatePanel3()) return;
+    }
+    if (current === 4) {
+      if (!validatePanel4()) return;
+      // Show a brief submitting state on the button
+      const btn = document.querySelector('#panel-4 .btn-next');
+      const orig = btn.textContent;
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+      await submitForm();
+      btn.textContent = orig;
+      btn.disabled = false;
+    }
+    goToPanel(current + 1);
+  }
+
+  function prevPanel(current) {
+    goToPanel(current - 1);
+  }
+
+  function goToPanel(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + n).classList.add('active');
+
+    // Update progress
+    for (let i = 1; i <= 5; i++) {
+      const s = document.getElementById('prog-' + i);
+      s.classList.remove('active', 'done');
+      if (i < n) s.classList.add('done');
+      else if (i === n) s.classList.add('active');
+    }
+
+    // Show correct payment on panel 5
+    if (n === 5) {
+      document.getElementById('pay-jumpstart').style.display = selectedPkg === 'jumpstart' ? 'block' : 'none';
+      document.getElementById('pay-content').style.display   = selectedPkg === 'content'  ? 'block' : 'none';
+    }
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function validatePanel2() {
+    let ok = true;
+    const checks = [
+      { id: 'fname',   fg: 'fg-fname',  check: v => v.length > 0 },
+      { id: 'lname',   fg: 'fg-lname',  check: v => v.length > 0 },
+      { id: 'email',   fg: 'fg-email',  check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+      { id: 'bizname', fg: 'fg-bizname', check: v => v.length > 0 },
+    ];
+    checks.forEach(({ id, fg, check }) => {
+      const el = document.getElementById(id);
+      const fg_el = document.getElementById(fg);
+      if (!check(el.value.trim())) {
+        fg_el.classList.add('has-error');
+        ok = false;
+      } else {
+        fg_el.classList.remove('has-error');
+      }
+    });
+    return ok;
+  }
+
+  function validatePanel3() {
+    const goalEl = document.getElementById('goal');
+    const fg = document.getElementById('fg-goal');
+    if (!goalEl.value) {
+      fg.classList.add('has-error');
+      return false;
+    }
+    fg.classList.remove('has-error');
+    return true;
+  }
+
+  function validatePanel4() {
+    const d1 = document.getElementById('date1');
+    const fg = document.getElementById('fg-date1');
+    if (!d1.value) {
+      fg.classList.add('has-error');
+      return false;
+    }
+    fg.classList.remove('has-error');
+    return true;
+  }
+
+  async function submitForm() {
+    const pkg  = selectedPkg === 'jumpstart' ? 'Jumpstart Package ($1,500/mo)' : 'Content Day ($2,000/mo)';
+    const d1   = document.getElementById('date1').value;
+    const t1   = document.getElementById('time1').value || 'No preference';
+    const d2   = document.getElementById('date2').value || '—';
+    const t2   = document.getElementById('time2').value || 'No preference';
+    const d3   = document.getElementById('date3').value || '—';
+    const t3   = document.getElementById('time3').value || 'No preference';
+
+    const pkgExtra = selectedPkg === 'content'
+      ? 'Shoot Location: '   + (document.getElementById('shoot-location').value || '—') + '\n' +
+        'Dates to Avoid: '   + (document.getElementById('shoot-avoid').value    || '—') + '\n' +
+        'Shoot Notes: '      + (document.getElementById('shoot-notes').value    || '—')
+      : 'Ad Account Setup: ' + (document.getElementById('ad-account').value     || '—') + '\n' +
+        'Monthly Ad Budget: '+ (document.getElementById('ad-budget').value      || '—');
+
+    const data = {
+      _subject:          'New Intake Form — ' + document.getElementById('fname').value + ' ' + document.getElementById('lname').value + ' / ' + document.getElementById('bizname').value,
+      package:           pkg,
+      name:              document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+      email:             document.getElementById('email').value,
+      phone:             document.getElementById('phone').value             || '—',
+      business:          document.getElementById('bizname').value,
+      industry:          document.getElementById('industry').value          || '—',
+      website:           document.getElementById('website').value           || '—',
+      instagram:         document.getElementById('instagram').value         || '—',
+      tiktok:            document.getElementById('tiktok').value            || '—',
+      in_business:       document.getElementById('biz-age').value           || '—',
+      primary_goal:      document.getElementById('goal').value              || '—',
+      ideal_audience:    document.getElementById('audience').value          || '—',
+      differentiator:    document.getElementById('differentiator').value    || '—',
+      content_topics:    document.getElementById('topics').value            || '—',
+      inspiration:       document.getElementById('inspo').value             || '—',
+      current_content:   document.getElementById('current-content').value   || '—',
+      avoid_in_content:  document.getElementById('dont-want').value         || '—',
+      package_details:   pkgExtra,
+      availability_1:    d1 + ' — ' + t1,
+      availability_2:    d2 + ' — ' + t2,
+      availability_3:    d3 + ' — ' + t3,
+      scheduling_notes:  document.getElementById('sched-notes').value       || '—',
+      other_notes:       document.getElementById('other-notes').value       || '—',
+    };
+
+    try {
+      const res = await fetch('https://formspree.io/f/mkopzyrv', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body:    JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Formspree error ' + res.status);
+    } catch (err) {
+      console.error('Submission error:', err);
+      // Fail silently — still advance to payment panel so client isn't blocked
+    }
+  }
+
+  function markPaid() {
+    document.getElementById('pay-back-row').style.display = 'none';
+    document.getElementById('pay-jumpstart').style.display = 'none';
+    document.getElementById('pay-content').style.display   = 'none';
+    document.getElementById('success-msg').style.display   = 'block';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
+</body>
+</html>
